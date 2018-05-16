@@ -1,5 +1,6 @@
 #!/bin/bash
 # author Giovanni Giglio (@GioGiglio)
+# description: creates a lezione.md file (if it doesn't exist yet) and initialize it with an header based on the name of the lesson
 
 # check args
 if [ $# -gt 0 ]; then

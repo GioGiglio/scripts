@@ -1,4 +1,6 @@
 #!/bin/bash
+# author Giovanni Giglio (@GioGiglio)
+# description: creates a dir named as the current date with MM-DD format.
 
 SCRIPT_NAME="$(basename $0)"
 if [ $# -gt 1 ]; then
