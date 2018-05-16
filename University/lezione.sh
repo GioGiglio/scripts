@@ -1,4 +1,11 @@
 #!/bin/bash
+# author Giovanni Giglio (@GioGiglio)
+
+# check args
+if [ $# -gt 0 ]; then
+	echo "$0: no args expected"
+	exit 1
+fi
 
 LESSON="$(pwd | egrep -o '\w+/lezioni' | cut -d '/' -f 1)"
 if [ -z $LESSON ]; then
@@ -6,6 +13,7 @@ if [ -z $LESSON ]; then
 	exit 1
 fi
 FILE='lezione.md'
+
 case $LESSON in
 	so )
 		HEADER='###### Sistemi Operativi - prof - '`date +%d/%m/%Y`
