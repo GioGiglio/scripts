@@ -8,12 +8,14 @@ if [ $# -gt 0 ]; then
 	exit 1
 fi
 
-LESSON="$(pwd | egrep -o '\w+/lezioni' | cut -d '/' -f 1)"
+FILE='lezione.md'
+LESSON="$(pwd | grep -oP '\w+(?=/lezioni)')"
+
+# check if $LESSON has a valid value
 if [ -z $LESSON ]; then
 	echo "Invalid path $(pwd)"
 	exit 1
 fi
-FILE='lezione.md'
 
 case $LESSON in
 	so )
@@ -26,7 +28,7 @@ case $LESSON in
 		HEADER='###### Big data & Analytics - Ferraro - '`date +%d/%m/%Y`
 		;;
 	* )
-		echo "$LESSON is not a valid lesson"
+		echo "$LESSON is not a valid lesson!"
 		exit 1
 		;;
 esac
@@ -39,7 +41,7 @@ fi
 
 cat << EOF > $FILE
 <style>body{margin: auto;width: 90%;max-width: 100%;}</style>
-
 $HEADER
+
 EOF
 echo "$FILE created!"
