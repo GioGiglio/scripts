@@ -10,22 +10,23 @@ fi
 
 FILE='lezione.md'
 LESSON="$(pwd | grep -oP '\w+(?=/lezioni)')"
+DATE="$(date +%d/%m/%Y)"
 
 # check if $LESSON has a valid value
-if [ -z $LESSON ]; then
+if [ -z "$LESSON" ]; then
 	echo "Invalid path $(pwd)"
 	exit 1
 fi
 
 case $LESSON in
 	so )
-		HEADER='###### Sistemi Operativi - prof - '`date +%d/%m/%Y`
+		HEADER='###### Sistemi Operativi - prof - '$DATE
 		;;
 	prowm )
-		HEADER='###### Programmazione Web e Mobile - Pirrone - '`date +%d/%m/%Y`
+		HEADER='###### Programmazione Web e Mobile - Pirrone - '$DATE
 		;;
 	bigdata )
-		HEADER='###### Big data & Analytics - Ferraro - '`date +%d/%m/%Y`
+		HEADER='###### Big data & Analytics - Ferraro - '$DATE
 		;;
 	* )
 		echo "$LESSON is not a valid lesson!"
