@@ -41,7 +41,24 @@ if [ -e $FILE ]; then
 fi
 
 cat << EOF > $FILE
-<style>body{margin: auto;width: 90%;max-width: 100%;}</style>
+<style>
+body{margin: auto;width: 90%;max-width: 100%;border:0;}
+body .markdown-body{padding:0;}
+@media only print{
+	ul {
+		page-break-inside: avoid;
+	}
+	ol > li {
+		page-break-inside: avoid;
+	}
+	a {
+		text-decoration: none !important;
+	}
+	blockquote {
+		margin: 1px solid black;
+	}
+}
+</style>
 $HEADER
 
 EOF
