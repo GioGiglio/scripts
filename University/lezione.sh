@@ -44,6 +44,11 @@ cat << EOF > $FILE
 <style>
 body{margin: auto;width: 90%;max-width: 100%;border:0;}
 body .markdown-body{padding:0;}
+@font-face {
+    font-family: "lato";
+    src:url("file:///home/gio/.myfonts/lato/Lato-Regular.ttf");
+}
+* { font-family:"lato"; }
 @media only print{
 	ul {
 		page-break-inside: avoid;
