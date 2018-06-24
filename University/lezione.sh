@@ -1,11 +1,19 @@
 #!/bin/bash
-# author Giovanni Giglio (@GioGiglio)
-# description: creates a lezione.md file (if it doesn't exist yet) and initialize it with an header based on the name of the lesson
+# author: Giovanni Giglio (@GioGiglio)
+# description: creates a lezione.md file (if it doesn't exist yet) and initialize it with some css style rules an header based on the name of the lesson
 
-# check args
+# parse args
+ARG_O=0
+
 if [ $# -gt 0 ]; then
-	echo "$0: no args expected"
-	exit 1
+	case "$1" in
+	-o | --open)
+		ARG_O=1
+		;;
+	*)
+		echo "$0: $1: Invalid argument"
+		exit 1
+	esac
 fi
 
 FILE='lezione.md'
@@ -15,6 +23,12 @@ DATE="$(date +%d/%m/%Y)"
 # check if $LESSON has a valid value
 if [ -z "$LESSON" ]; then
 	echo "Invalid path $(pwd)"
+	exit 1
+fi
+
+# check file existence
+if [ -e $FILE ]; then
+	echo "$FILE already exists!"
 	exit 1
 fi
 
@@ -33,12 +47,6 @@ case $LESSON in
 		exit 1
 		;;
 esac
-
-# check file existence
-if [ -e $FILE ]; then
-	echo "$FILE already exists!"
-	exit 1
-fi
 
 cat << EOF > $FILE
 <style>
@@ -68,3 +76,7 @@ $HEADER
 
 EOF
 echo "$FILE created!"
+
+if [ $ARG_O -gt 0 ]; then
+	xdg-open $FILE &> /dev/null &
+fi
