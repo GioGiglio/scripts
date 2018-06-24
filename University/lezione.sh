@@ -50,14 +50,11 @@ esac
 
 cat << EOF > $FILE
 <style>
-body{margin: auto;width: 90%;max-width: 100%;border:0;}
-body .markdown-body{padding:0;}
-@font-face {
-    font-family: "lato";
-    src:url("file:///home/gio/.myfonts/lato/Lato-Regular.ttf");
-}
+body{margin: auto;width: 90%;max-width: 100%;}
 * { font-family:"lato"; }
 @media only print{
+	body{border:0;}
+	body .markdown-body{padding:0;}
 	ul {
 		page-break-inside: avoid;
 	}
