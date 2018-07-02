@@ -1,54 +1,65 @@
 #!/bin/bash
-# author: Giovanni Giglio (@GioGiglio)
-# description: creates a lezione.md file (if it doesn't exist yet) and initialize it with some css style rules an header based on the name of the lesson
+#
+# Author:       Giovanni Giglio
+# Email:        giovannimaria.giglio@gmail.com
+# Description:  Creates a lezione.md file (if it doesn't already exist) 
+#               and fills it with some css style rules and an header based on the name of the lesson
+#               and the current date.
+# Usage:        cd <lesson root directory> && lezione [-o]
 
-# parse args
-ARG_O=0
+function error_exit {
+	echo "${progname}: ${1:-"Unknown error"}" 1>&2
+	exit 1
+}
 
-if [ $# -gt 0 ]; then
-	case "$1" in
-	-o | --open)
-		ARG_O=1
-		;;
-	*)
-		echo "$0: $1: Invalid argument"
-		exit 1
+function checks {
+	# parse args #
+	while [[ $# -gt 0 ]]; do
+		case "$1" in
+		-o | --open)
+			arg_o=
+			shift
+			;;
+		*)
+			error_exit "Invalid option $1"
+		esac
+	done
+
+	# init vars #
+	lesson=$(pwd | grep -oP '\w+(?=/lezioni)')
+	date="$(date +%d/%m/%Y)"
+
+	# check if $lesson has a valid value #
+	if [ -z "$lesson" ]; then
+		error_exit "Invalid path $(pwd)"
+	fi
+
+	# assing $header based on $lesson #
+	case $lesson in
+		so )
+			header='###### Sistemi Operativi - prof - '$date
+			;;
+		prowm )
+			header='###### Programmazione Web e Mobile - Pirrone - '$date
+			;;
+		bigdata )
+			header='###### Big data & Analytics - Ferraro - '$date
+			;;
+		* )
+			error_exit "Invalid lesson $lesson"
+			;;
 	esac
-fi
+		
+	# check file existence #
+	if [ -e $file ]; then
+		error_exit "$file already exists!"
+	fi
+}
 
-FILE='lezione.md'
-LESSON="$(pwd | grep -oP '\w+(?=/lezioni)')"
-DATE="$(date +%d/%m/%Y)"
+function main {
 
-# check if $LESSON has a valid value
-if [ -z "$LESSON" ]; then
-	echo "Invalid path $(pwd)"
-	exit 1
-fi
-
-# check file existence
-if [ -e $FILE ]; then
-	echo "$FILE already exists!"
-	exit 1
-fi
-
-case $LESSON in
-	so )
-		HEADER='###### Sistemi Operativi - prof - '$DATE
-		;;
-	prowm )
-		HEADER='###### Programmazione Web e Mobile - Pirrone - '$DATE
-		;;
-	bigdata )
-		HEADER='###### Big data & Analytics - Ferraro - '$DATE
-		;;
-	* )
-		echo "$LESSON is not a valid lesson!"
-		exit 1
-		;;
-esac
-
-cat << EOF > $FILE
+	# fill $file #
+	cat << EOF > $file
 <style>
 body{margin: auto;width: 90%;max-width: 100%;}
 * { font-family:"lato"; }
@@ -69,11 +80,20 @@ body{margin: auto;width: 90%;max-width: 100%;}
 	}
 }
 </style>
-$HEADER
+$header
 
 EOF
-echo "$FILE created!"
 
-if [ $ARG_O -gt 0 ]; then
-	xdg-open $FILE &> /dev/null &
-fi
+	echo "$file created!"
+
+	if ! [ -z ${arg_o+x} ]; then
+		echo "Opening ${file}..."
+		xdg-open $file &> /dev/null &
+	fi
+}
+
+# Start point #
+progname=$(basename $0)
+file='lezione.md'
+
+checks $@ && main
