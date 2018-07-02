@@ -25,6 +25,11 @@ function checks {
 		esac
 	done
 
+	# check file existence #
+	if [ -e $file ]; then
+		error_exit "$file already exists!"
+	fi
+
 	# init vars #
 	lesson=$(pwd | grep -oP '\w+(?=/lezioni)')
 	date="$(date +%d/%m/%Y)"
@@ -49,11 +54,6 @@ function checks {
 			error_exit "Invalid lesson $lesson"
 			;;
 	esac
-		
-	# check file existence #
-	if [ -e $file ]; then
-		error_exit "$file already exists!"
-	fi
 }
 
 function main {
