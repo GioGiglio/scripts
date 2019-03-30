@@ -35,3 +35,6 @@ EOF
 markdown-it "$input" >> "$output"
 
 echo '</article></body></html>' >> "$output"
+
+# replace <p><cap> elements with <p class="cap">
+sed -i -e 's/<p><cap>/<p class="cap">/g' -e 's/<\/cap><\/p>/<\/p>/g' "$output"
